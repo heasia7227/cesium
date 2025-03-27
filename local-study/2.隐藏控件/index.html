@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>2.隐藏控件</title>
+        <script src="../../Build/Cesium/Cesium.js"></script>
+        <link href="../../Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #cesiumContainer {
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+        <script type="module">
+            // 配置自己的Cesium token
+            Cesium.Ion.defaultAccessToken =
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMGE1ZmU5OC01NGU2LTQyYmItYWUxMC1lZTU2YjdjOTBjZGYiLCJpZCI6Mjg4MTQxLCJpYXQiOjE3NDMwNDI5ODB9.QRrb8OkJQAHP1bXhD00vV9bPjSKlPwc20D71THdwnmY";
+
+            // 初始化Cesium视窗
+            const viewer = new Cesium.Viewer("cesiumContainer", {
+                geocoder: false, // 右上角，隐藏查找控件
+                homeButton: false, // 右上角，隐藏 Home Icon
+                sceneModePicker: false, // 右上角，隐藏视角选择器，球、平面、梯形
+                baseLayerPicker: false, // 右上角，隐藏图层选择器
+                navigationHelpButton: false, // 右上角，隐藏帮助按钮
+                animation: false, // 左下角，隐藏动画控制器
+                timeline: false, // 底部，隐藏时间线
+                fullscreenButton: false, // 右下角，隐藏全屏按钮
+                // 加载地形
+                terrainProvider: await Cesium.createWorldTerrainAsync({
+                    requestVertexNormals: true, // 开启照明信息
+                    requestWaterMask: true, // 开启水波效果
+                }),
+            });
+
+            // 底部，隐藏版权信息
+            viewer.cesiumWidget.creditContainer.style.display = "none";
+
+            // 摄像头飞行到目标区域
+            viewer.camera.flyTo({
+                destination: Cesium.Cartesian3.fromDegrees(108.953364, 34.266161, 1000), // 摄像头的对准的目标坐标
+                orientation: {
+                    // 摄像头目标方向
+                    heading: Cesium.Math.toRadians(0.0), // 方位角，地图沿着目标左右旋转，往左转正值，往右转负值，默认值 0
+                    pitch: Cesium.Math.toRadians(-90.0), // 俯仰角，0度是水平，往下看（怀里）是负值，网上看（抬头）是正值，默认值 -90
+                },
+            });
+        </script>
+    </head>
+    <body>
+        <div id="cesiumContainer"></div>
+    </body>
+</html>
