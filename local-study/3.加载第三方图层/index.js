@@ -40,10 +40,16 @@ viewer.cesiumWidget.creditContainer.style.display = "none";
 // viewer.imageryLayers.addImageryProvider(gaodeImage);
 
 // 百度矢量地图
-const baiduVector = new CustomBaiduImageryProvider({
-    url: "http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1",
+// const baiduVector = new CustomBaiduImageryProvider({
+//     url: "http://online{s}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&scaler=1&p=1",
+// });
+// viewer.imageryLayers.addImageryProvider(baiduVector);
+
+// 百度影像地图
+const baiduImage = new CustomBaiduImageryProvider({
+    url: "http://shangetu{s}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46",
 });
-viewer.imageryLayers.addImageryProvider(baiduVector);
+viewer.imageryLayers.addImageryProvider(baiduImage);
 
 // 腾讯矢量地图
 // const tencentVector = new Cesium.UrlTemplateImageryProvider({
