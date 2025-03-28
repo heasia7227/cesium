@@ -4,7 +4,7 @@ const startTime = Cesium.JulianDate.now();
 const createPlane = (viewer) => {
     const planeEntity = viewer.entities.add({
         name: "plane",
-        position: Cesium.Cartesian3.fromDegrees(116.39, 39.9, 10000), // 北京
+        position: Cesium.Cartesian3.fromDegrees(108.95, 34.26, 10000), // 西安
         model: {
             uri: "./gltf/Cesium_Air.glb",
             minimumPixelSize: 128,
