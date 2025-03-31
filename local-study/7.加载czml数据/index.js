@@ -18,6 +18,8 @@ const viewer = new Cesium.Viewer("cesiumContainer", {
         requestVertexNormals: true, // 开启照明信息
         requestWaterMask: true, // 开启水波效果
     }),
+
+    shouldAnimate: true, // 开启动画，GLTF中的动画会播放
 });
 
 // 底部，隐藏版权信息
@@ -30,12 +32,32 @@ const gaodeImage = new Cesium.UrlTemplateImageryProvider({
 });
 viewer.imageryLayers.addImageryProvider(gaodeImage);
 
-const geojson = Cesium.GeoJsonDataSource.load("https://geo.datav.aliyun.com/areas_v3/bound/610103.json", {
-    fill: Cesium.Color.BLUE.withAlpha(0.2),
-    stroke: Cesium.Color.WHITE,
-});
+const czml = [
+    {
+        id: "document",
+        name: "CZML Model",
+        version: "1.0",
+    },
+    {
+        id: "aircraft model",
+        name: "Cesium Air",
+        position: {
+            cartographicDegrees: [108.95, 34.26, 10000],
+        },
+        model: {
+            gltf: "./gltf/Cesium_Air.glb",
+            scale: 2.0,
+            minimumPixelSize: 128,
+        },
+    },
+];
 
-geojson.then((dataSource) => {
-    viewer.dataSources.add(dataSource);
-    viewer.flyTo(dataSource);
-});
+const dataSourcePromise = viewer.dataSources.add(Cesium.CzmlDataSource.load(czml));
+
+dataSourcePromise
+    .then(function (dataSource) {
+        viewer.trackedEntity = dataSource.entities.getById("aircraft model");
+    })
+    .catch(function (error) {
+        window.alert(error);
+    });
