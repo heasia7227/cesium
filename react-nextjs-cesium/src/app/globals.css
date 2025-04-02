@@ -30,3 +30,7 @@ body {
 * {
     box-sizing: border-box;
 }
+
+.lil-gui.autoPlace {
+    top: 58px;
+}

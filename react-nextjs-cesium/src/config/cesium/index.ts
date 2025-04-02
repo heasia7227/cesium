@@ -14,8 +14,8 @@ const CreateViewer = async (cesiumContainer: string) => {
         imageryProvider: false, // 加载其他第三方地图时，需要关闭默认图层
         // 加载地形
         terrainProvider: await Cesium.createWorldTerrainAsync({
-            requestVertexNormals: true, // 开启照明信息
-            requestWaterMask: true, // 开启水波效果
+            requestVertexNormals: true, // 照明信息
+            requestWaterMask: true, // 水波效果
         }),
 
         shouldAnimate: true, // 开启动画，GLTF中的动画会播放
@@ -29,6 +29,12 @@ const CreateViewer = async (cesiumContainer: string) => {
         url: "https://webst01.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}",
     });
     viewer.imageryLayers.addImageryProvider(gaodeImage);
+
+    // 高德矢量地图
+    // const gaodeVector = new Cesium.UrlTemplateImageryProvider({
+    //     url: "https://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}",
+    // });
+    // viewer.imageryLayers.addImageryProvider(gaodeVector);
 
     return viewer;
 };
