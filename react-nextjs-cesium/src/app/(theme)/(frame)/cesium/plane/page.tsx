@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import GUI from "lil-gui";
 import * as Cesium from "cesium";
 import { CreateViewer } from "@/config/cesium";
+import PlaneStatus from "@/views/cesium/plane/Status";
+
+const PlaneStatusContainer = React.memo(PlaneStatus);
 
 const myObject = {
     flighting: false,
@@ -14,6 +17,7 @@ const CesiumPlane = () => {
     const [airplaneEntity, setAirplaneEntity] = useState<Cesium.Entity>();
     const [cesiumViewer, setCesiumViewer] = useState<Cesium.Viewer>();
     const [flightingTimer, setFlightingTimer] = useState<boolean>(false);
+    const [showPlaneStatus, setShowPlaneStatus] = useState<boolean>(false);
 
     useEffect(() => {
         createGui();
@@ -75,6 +79,16 @@ const CesiumPlane = () => {
 
         // 显示飞行线路
         flightLinePath(viewer, positions);
+
+        viewer.screenSpaceEventHandler.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
+            const pickedFeature = viewer.scene.pick(event.position);
+            if (Cesium.defined(pickedFeature) && pickedFeature.id?.name === "plane") {
+                // 显示飞机状态
+                setShowPlaneStatus(true);
+            } else {
+                setShowPlaneStatus(false);
+            }
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     };
 
     const flightPath = () => {
@@ -165,7 +179,9 @@ const CesiumPlane = () => {
 
     return (
         <>
-            <div id="cesiumContainer" className="h-full w-full"></div>
+            <div id="cesiumContainer" className="h-full w-full relative">
+                <PlaneStatusContainer show={showPlaneStatus} />
+            </div>
         </>
     );
 };
